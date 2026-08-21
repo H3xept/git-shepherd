@@ -1,0 +1,30 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # There is no build and no dependency install, so the gate is a parse of every
+  # source file plus a shellcheck of the installer. Behavior is verified against
+  # a live Herdr session; see CONTRIBUTING.md.
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Parse every module
+        run: |
+          for f in bin/*.mjs lib/*.mjs; do
+            node --check "$f" || exit 1
+          done
+
+      - name: Check the installer
+        run: |
+          bash -n install.sh
+          shellcheck install.sh

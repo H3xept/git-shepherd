@@ -1,0 +1,8 @@
+# git-shepherd has no build step and no dependencies. Nothing here should ever
+# be generated inside the checkout; Herdr keeps plugin state and config in its
+# own directories. These entries exist to keep editor and OS noise out.
+.DS_Store
+*.log
+node_modules/
+.idea/
+.vscode/

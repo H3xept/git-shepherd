@@ -1,0 +1,49 @@
+# git-shepherd — upstream pull request state as a Herdr Space icon.
+#
+# Install:  herdr plugin install H3xept/git-shepherd
+# Develop:  herdr plugin link /path/to/this/repo
+#
+# There is no build step. The plugin is Node (builtins only) and needs `git` and
+# an authenticated `gh` on PATH. See README.md for the sidebar rows you must add
+# to your Herdr config before any icon can appear.
+
+id = "h3xept.git-shepherd"
+name = "git shepherd"
+version = "1.0.0"
+min_herdr_version = "0.8.0"
+description = "Draft/open/merged/closed pull request icon next to every Space"
+platforms = ["linux", "macos", "windows"]
+
+# The poller. Herdr runs startup hooks once per enabled plugin after the session
+# is restored and again after a live handoff, which is exactly when the icons
+# need repopulating: workspace tokens do not survive a server restart.
+[[startup]]
+command = ["node", "bin/start.mjs"]
+
+# A new worktree should show its pull request immediately instead of waiting for
+# the next poll.
+[[events]]
+on = "worktree.created"
+command = ["node", "bin/refresh.mjs", "--context"]
+
+[[events]]
+on = "worktree.opened"
+command = ["node", "bin/refresh.mjs", "--context"]
+
+[[actions]]
+id = "refresh"
+title = "Refresh pull request icons"
+contexts = ["global", "workspace"]
+command = ["node", "bin/refresh.mjs"]
+
+[[actions]]
+id = "start"
+title = "Start pull request poller"
+contexts = ["global"]
+command = ["node", "bin/start.mjs"]
+
+[[actions]]
+id = "stop"
+title = "Stop pull request poller"
+contexts = ["global"]
+command = ["node", "bin/stop.mjs"]
