@@ -35,6 +35,13 @@ sidebar rows, and starts the poller. It keeps a config edit only if
 `herdr config check` still passes, and never rewrites a sidebar layout you
 already have.
 
+The plugin runs as your user, with your environment and the full herdr CLI.
+Read `install.sh` before you pipe it to `bash`. `herdr plugin install` shows
+the manifest and every command it runs before it installs; pin a revision with
+`--ref <tag-or-sha>` if you want one. See herdr's
+[trust and security guidance](https://herdr.dev/docs/plugins/#trust-and-security)
+and [SECURITY.md](SECURITY.md).
+
 <details>
 <summary>Manual install</summary>
 
